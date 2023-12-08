@@ -11,8 +11,12 @@ const SignIn = () => {
     <div className="h-full flex justify-center items-center">
       <Auth
         supabaseClient={supabaseClient}
-        appearance={{ theme: ThemeSupa }}
+        appearance={{
+          theme: ThemeSupa,
+          style: { container: { width: "300px" } },
+        }}
         providers={["kakao"]}
+        localization={{}}
       />
     </div>
   );
