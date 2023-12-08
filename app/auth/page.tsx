@@ -1,0 +1,21 @@
+"use client";
+
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+
+const SignIn = () => {
+  const supabaseClient = useSupabaseClient();
+
+  return (
+    <div className="h-full flex justify-center items-center">
+      <Auth
+        supabaseClient={supabaseClient}
+        appearance={{ theme: ThemeSupa }}
+        providers={["kakao"]}
+      />
+    </div>
+  );
+};
+
+export default SignIn;
