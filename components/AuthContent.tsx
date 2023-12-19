@@ -22,7 +22,7 @@ const AuthContent = () => {
     }
   };
   return (
-    <div className="font-semibold h-full flex flex-col items-center justify-center">
+    <>
       {user && <div>안녕하세요 {user?.user_metadata.full_name}님</div>}
       <div>
         <button
@@ -31,7 +31,7 @@ const AuthContent = () => {
           {user ? "로그아웃" : "로그인"}
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

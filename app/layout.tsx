@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SupabaseProvider from "@/provider/SupabaseProvider";
+import Script from "next/script";
+import KakaoProvider from "@/provider/KakaoProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SupabaseProvider>{children}</SupabaseProvider>
+        <SupabaseProvider>
+          <KakaoProvider>{children}</KakaoProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );
