@@ -9,7 +9,7 @@ const SignIn = () => {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <Auth
+      {/* <Auth
         supabaseClient={supabaseClient}
         appearance={{
           theme: ThemeSupa,
@@ -17,7 +17,7 @@ const SignIn = () => {
         }}
         providers={["kakao"]}
         localization={{}}
-      />
+      /> */}
     </div>
   );
 };
