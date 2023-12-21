@@ -8,10 +8,10 @@ declare global {
 }
 
 interface KakaoProviderProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const KakaoProvider: React.FC<KakaoProviderProps> = ({ children }) => {
+const KakaoProvider: React.FC<KakaoProviderProps> = () => {
   function KakaoInit() {
     // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
     window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
@@ -20,15 +20,12 @@ const KakaoProvider: React.FC<KakaoProviderProps> = ({ children }) => {
   }
 
   return (
-    <>
-      <Script
-        src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
-        integrity={process.env.NEXT_PUBLIC_KAKAO_INTEGRITY_VALUE}
-        crossOrigin="anonymous"
-        onLoad={KakaoInit}
-      />
-      {children}
-    </>
+    <Script
+      src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+      integrity={process.env.NEXT_PUBLIC_KAKAO_INTEGRITY_VALUE}
+      crossOrigin="anonymous"
+      onLoad={KakaoInit}
+    />
   );
 };
 

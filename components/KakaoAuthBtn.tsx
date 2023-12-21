@@ -1,6 +1,9 @@
 "use client";
 
 const KakaoAuthButton = () => {
+  const user = window.localStorage.getItem("userData");
+  console.log(user);
+
   const handleAuth = async () => {
     window.Kakao.Auth.authorize({
       redirectUri: "http://localhost:3000/auth/kakao",

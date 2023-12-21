@@ -2,7 +2,6 @@
 
 import { useUser } from "@supabase/auth-helpers-react";
 import axios from "axios";
-import FriendsList from "./FriendsList";
 
 const TextSend = () => {
   const user = useUser();
@@ -97,7 +96,6 @@ const TextSend = () => {
         <form
           className="flex flex-col gap-2 justify-center items-center  mt-2"
           onSubmit={handleSend}>
-          <FriendsList />
           <input
             className="border py-1 px-3 rounded-lg"
             placeholder="입력하세요"

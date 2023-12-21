@@ -1,3 +1,5 @@
+"use client";
+
 import AuthContent from "@/components/AuthContent";
 import KakaoAuth from "@/components/KakaoAuth";
 import SendMe from "@/components/SendMe";

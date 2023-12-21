@@ -1,31 +1,56 @@
-import axios from "axios";
+"use client";
 
-const KakaoAuth = async ({
+import { IKakaoUser } from "@/types/kakao";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { QueryClient, useQuery } from "react-query";
+
+interface User extends IKakaoUser {
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface IUserResponse {
+  ok: boolean;
+  user: User;
+}
+
+const KakaoAuth = ({
   searchParams,
 }: {
   searchParams: { [key: string]: string };
 }) => {
-  const grant_type = "authorization_code";
-  const client_id = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY!;
-  const redirect_uri = "http://localhost:3000/auth/kakao";
-  const code = searchParams.code;
-  const client_secret = process.env.NEXT_PUBLIC_KAKAO_CLIENT_SECRET!;
+  const userFetcher = async (code: string) => {
+    return await (
+      await fetch("/api/user/me", {
+        method: "POST",
+        body: JSON.stringify({
+          code,
+        }),
+      })
+    ).json();
+  };
 
-  try {
-    const res = await fetch(
-      `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}&client_secret=${client_secret}`,
-      {
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      }
-    );
-    const json = await res.json();
-    console.log(json);
-  } catch (error: any) {
-    console.log("post 실패", error.message);
-  }
-  return <div>hi</div>;
+  const { data, isLoading } = useQuery<IUserResponse>("user", () =>
+    userFetcher(searchParams.code)
+  );
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (data?.ok) {
+      window.localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          accessToken: data.user.accessToken,
+          refreshToken: data.user.refreshToken,
+        })
+      );
+      router.push("/");
+    }
+  }, [data, isLoading, router]);
+
+  return <div>로그인 중입니다...</div>;
 };
 
 export default KakaoAuth;

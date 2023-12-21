@@ -19,9 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SupabaseProvider>
-          <KakaoProvider>{children}</KakaoProvider>
-        </SupabaseProvider>
+        <KakaoProvider />
+        <SupabaseProvider>{children}</SupabaseProvider>
       </body>
     </html>
   );
