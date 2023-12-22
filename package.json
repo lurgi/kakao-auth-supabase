@@ -19,7 +19,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-query": "^3.39.3",
-    "supabase": "^1.115.5"
+    "supabase": "^1.115.5",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/node": "^20",

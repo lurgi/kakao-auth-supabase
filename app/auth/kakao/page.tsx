@@ -1,18 +1,17 @@
 "use client";
 
-import { IKakaoUser } from "@/types/kakao";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { QueryClient, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
-interface User extends IKakaoUser {
-  accessToken: string;
-  refreshToken: string;
-}
+import useUser from "@/hooks/useUser";
+
+import { IKakaoUser } from "@/types/kakao";
 
 interface IUserResponse {
   ok: boolean;
-  user: User;
+  accessToken: string;
+  refreshToken: string;
 }
 
 const KakaoAuth = ({
@@ -20,9 +19,13 @@ const KakaoAuth = ({
 }: {
   searchParams: { [key: string]: string };
 }) => {
-  const userFetcher = async (code: string) => {
+  // 1. 로그인 정보로 토큰을 가져온다.
+  // 2. zustand에 토큰을 저장한다.
+  // 3. 로컬 스토리지에 토큰을 저장한다.
+  // 4. 홈으로 이동한다.
+  const userToken = async (code: string) => {
     return await (
-      await fetch("/api/user/me", {
+      await fetch("/api/kakao/user/token", {
         method: "POST",
         body: JSON.stringify({
           code,
@@ -31,24 +34,30 @@ const KakaoAuth = ({
     ).json();
   };
 
-  const { data, isLoading } = useQuery<IUserResponse>("user", () =>
-    userFetcher(searchParams.code)
+  const { setAccessToken, setRefreshToken, setIsLoading } = useUser(
+    (state) => state
   );
-
+  const { data: tokenData, isLoading: isTokenLoading } =
+    useQuery<IUserResponse>("user", () => userToken(searchParams.code));
   const router = useRouter();
 
   useEffect(() => {
-    if (data?.ok) {
+    if (tokenData?.ok) {
+      setIsLoading(true);
+
+      setAccessToken(tokenData.accessToken);
+      setRefreshToken(tokenData.refreshToken);
       window.localStorage.setItem(
-        "userData",
+        "token",
         JSON.stringify({
-          accessToken: data.user.accessToken,
-          refreshToken: data.user.refreshToken,
+          accessToken: tokenData.accessToken,
+          refreshToken: tokenData.refreshToken,
         })
       );
+      setIsLoading(false);
       router.push("/");
     }
-  }, [data, isLoading, router]);
+  }, [tokenData, setAccessToken, setRefreshToken, setIsLoading]);
 
   return <div>로그인 중입니다...</div>;
 };
